@@ -20,6 +20,12 @@ Add
 to your pubspec.yaml, and run `flutter packages get` in your project root directory.
 
 
+## Showcases
+
+![](https://github.com/jzoom/images/raw/master/toast.gif)
+![](https://github.com/jzoom/images/raw/master/alert.gif)
+
+
 ## ROADMAP
 
 * [x] alert
@@ -28,7 +34,7 @@ to your pubspec.yaml, and run `flutter packages get` in your project root direct
 * [ ] customize alert dialog
 * [ ] customize toast
 * [ ] support bottom sheet.
-
+* [ ] support input
 
 ##  Integrate with your flutter app
 

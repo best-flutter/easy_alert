@@ -4,7 +4,7 @@ import 'package:easy_alert/easy_alert.dart';
 
 void main() => runApp(new AlertProvider(
       child: new MyApp(),
-      config: new AlertConfig(ok: "确定", cancel: "取消"),
+      config: new AlertConfig(ok: "OK", cancel: "CANCEL"),
     ));
 
 class MyApp extends StatelessWidget {
