@@ -1,8 +1,8 @@
 name: easy_alert
 description: A alert package to use alert and toast within one line code.
 version: 0.0.1
-author:
-homepage:
+author: JZoom <jzoom8112@gmail.com>
+homepage: https://github.com/jzoom/easy_alert
 
 environment:
   sdk: ">=2.0.0-dev.40.0 <3.0.0"

@@ -1,9 +1,64 @@
+
+<p align="center">
+    <a href="https://pub.dartlang.org/packages/easy_alert">
+        <img src="https://img.shields.io/pub/v/easy_alert.svg" alt="pub package" />
+    </a>
+</p>
+
 # easy_alert
 
-A new flutter package project.
+A package for flutter to use alert and toast within one line code.
 
 ## Getting Started
 
-For help getting started with Flutter, view our online [documentation](https://flutter.io/).
+Add 
 
-For help on editing package code, view the [documentation](https://flutter.io/developing-packages/).
+```
+    easy_alert:
+```
+
+to your pubspec.yaml, and run `flutter packages get` in your project root directory.
+
+
+## ROADMAP
+
+* [x] alert
+* [x] confirm
+* [x] toast
+* [ ] customize alert dialog
+* [ ] customize toast
+* [ ] support bottom sheet.
+
+
+##  Integrate with your flutter app
+
+```
+void main() => runApp(new AlertProvider(
+      child: new YourApp(),
+      config: new AlertConfig(
+        ok: "OK text for `ok` button in AlertDialog", 
+        cancel: "CANCEL text for `cancel` button in AlertDialog"),
+    ));
+```
+
+## alert
+
+```
+  Alert.alert(context, title: "Hello", content: "this is a alert")
+      .then((_) => Alert.toast(context, "You just click ok"));
+
+```
+
+## confirm
+
+```
+ Alert.confirm(context, title: "Hello", content: "this is a alert")
+          .then((int ret) =>
+              Alert.toast(context, ret == Alert.OK ? "ok" : "cancel"));
+```
+
+## toast
+
+```
+Alert.toast(context,"Very long toast",position: ToastPosition.bottom, duration: ToastDuration.long);
+```

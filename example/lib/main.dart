@@ -55,7 +55,7 @@ class _MyHomePageState extends State<MyHomePage> {
             onPressed: () {
               Alert.confirm(context, title: "Hello", content: "this is a alert")
                   .then((int ret) =>
-                      Alert.toast(context, ret == 0 ? "ok" : "cancel"));
+                      Alert.toast(context, ret == Alert.OK ? "ok" : "cancel"));
             },
             child: new Text("confirm"),
           ),
