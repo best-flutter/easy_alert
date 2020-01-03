@@ -39,9 +39,13 @@ class _EasyPickerState extends State<EasyPicker> {
         try {
           int index = await Alert.pick(context,
               values: widget.values, index: widget.index);
-          widget?.onSelectedItemChanged(index);
+          if (widget.onSelectedItemChanged != null) {
+            widget.onSelectedItemChanged(index);
+          }
         } catch (e) {
-          widget?.onCancel();
+          if (widget.onCancel != null) {
+            widget.onCancel();
+          }
         }
       },
     );

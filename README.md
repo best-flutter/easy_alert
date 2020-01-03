@@ -35,6 +35,7 @@ to your pubspec.yaml, and run `flutter packages get` in your project root direct
 * [ ] customize toast
 * [ ] support bottom sheet.
 * [ ] support input
+* [x] support pick
 
 ##  Integrate with your flutter app
 
@@ -67,4 +68,17 @@ void main() => runApp(new AlertProvider(
 
 ```
 Alert.toast(context,"Very long toast",position: ToastPosition.bottom, duration: ToastDuration.long);
+```
+
+
+## pick
+
+```
+try {
+  int index = await Alert.pick(context,
+      values: widget.values, index: widget.index);
+    ...have selected
+} catch (e) {
+    ... cancel select
+}
 ```
