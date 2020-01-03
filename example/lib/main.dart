@@ -52,6 +52,19 @@ class _MyHomePageState extends State<MyHomePage> {
             child: new Text("alert with content"),
           ),
           new RaisedButton(
+            onPressed: () async {
+              var arr = ['a', 'b', 'c'];
+              try {
+                int index = await Alert.pick(context, values: arr, index: 0);
+                Alert.toast(context, "You just pick ${arr[index]}");
+              } catch (e) {
+                Alert.toast(context, "Canceled",
+                    position: ToastPosition.center);
+              }
+            },
+            child: new Text("pick value from ['a','b','c']"),
+          ),
+          new RaisedButton(
             onPressed: () {
               Alert.confirm(context, title: "Hello", content: "this is a alert")
                   .then((int ret) =>

@@ -19,7 +19,12 @@ class AlertProvider extends StatefulWidget {
 
   final AlertConfig config;
 
-  AlertProvider({this.child, this.config: const AlertConfig()});
+  final TextDirection textDirection;
+
+  AlertProvider(
+      {this.child,
+      this.config: const AlertConfig(),
+      this.textDirection = TextDirection.ltr});
 
   static AlertConfig getConfig(BuildContext context) {
     final _AlertScope scope = context.inheritFromWidgetOfExactType(_AlertScope);
@@ -64,8 +69,9 @@ class Toast {
 
 class ToastView extends StatelessWidget {
   final String text;
+  final TextDirection textDirection;
 
-  ToastView({this.text});
+  ToastView({this.text, this.textDirection});
 
   @override
   Widget build(BuildContext context) {
@@ -77,7 +83,7 @@ class ToastView extends StatelessWidget {
           padding: new EdgeInsets.fromLTRB(10.0, 5.0, 10.0, 5.0),
           child: new Text(
             text,
-            textDirection: TextDirection.ltr,
+            textDirection: textDirection,
             textAlign: TextAlign.center,
             style: new TextStyle(fontSize: 13.0, color: Colors.white),
           ),
@@ -195,6 +201,7 @@ class _AlertProviderState extends State<AlertProvider>
                       child: new IgnorePointer(
                         child: new ToastView(
                           text: _current.message,
+                          textDirection: widget.textDirection,
                         ),
                       ),
                     );
