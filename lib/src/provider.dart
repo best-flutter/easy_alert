@@ -8,10 +8,9 @@ import 'package:flutter/material.dart';
 class AlertConfig {
   final String ok;
   final String cancel;
-  const AlertConfig({
-    this.ok: "OK",
-    this.cancel: "CANCEL",
-  });
+  final bool useIosStyle;
+  const AlertConfig(
+      {this.ok: "OK", this.cancel: "CANCEL", this.useIosStyle: true});
 }
 
 class AlertProvider extends StatefulWidget {
@@ -114,7 +113,7 @@ class _AlertProviderState extends State<AlertProvider>
   void showToast(
     String message, {
     ToastPosition position,
-    ToastDuration duration,
+    ToastDuration duration: ToastDuration.short,
   }) {
     Toast toast =
         new Toast(message: message, position: position, duration: duration);
@@ -150,8 +149,6 @@ class _AlertProviderState extends State<AlertProvider>
       }
     });
   }
-
-  void _next(_) {}
 
   @override
   void initState() {

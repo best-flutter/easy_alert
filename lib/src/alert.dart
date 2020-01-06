@@ -5,6 +5,13 @@ import 'package:easy_alert/src/provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+class Option<T> {
+  String label;
+  T value;
+
+  Option(this.label, this.value);
+}
+
 class Alert {
   static const int OK = 0;
   static const int CANCEL = 1;
@@ -12,9 +19,10 @@ class Alert {
   static Future<int> confirm(BuildContext context,
       {String title, String content, String ok, String cancel}) {
     Completer<int> completer = new Completer<int>();
+    AlertConfig config = AlertProvider.getConfig(context);
+    assert(config != null, "A `AlertProvider` must be supplied");
+
     if (ok == null || cancel != null) {
-      AlertConfig config = AlertProvider.getConfig(context);
-      assert(config != null, "A `AlertProvider` must be supplied");
       if (ok == null) ok = config.ok;
       if (cancel == null) cancel = config.cancel;
     }
@@ -22,31 +30,54 @@ class Alert {
         context: context,
         barrierDismissible: false, // user must tap button!
         builder: (c) {
-          return CupertinoAlertDialog(
-            title: Text(title),
-            content: content != null
-                ? new Padding(
-                    padding: new EdgeInsets.only(top: 10),
-                    child: Text(content),
-                  )
-                : null,
-            actions: <Widget>[
-              CupertinoDialogAction(
-                child: Text(cancel),
-                onPressed: () {
-                  completer.complete(Alert.CANCEL);
-                  Navigator.pop(context);
-                },
-              ),
-              CupertinoDialogAction(
-                child: Text(ok),
-                onPressed: () {
-                  completer.complete(Alert.OK);
-                  Navigator.pop(context);
-                },
-              ),
-            ],
-          );
+          if (config.useIosStyle) {
+            return CupertinoAlertDialog(
+              title: Text(title),
+              content: content != null
+                  ? new Padding(
+                      padding: new EdgeInsets.only(top: 10),
+                      child: Text(content),
+                    )
+                  : null,
+              actions: <Widget>[
+                CupertinoDialogAction(
+                  child: Text(cancel),
+                  onPressed: () {
+                    completer.complete(Alert.CANCEL);
+                    Navigator.pop(context);
+                  },
+                ),
+                CupertinoDialogAction(
+                  child: Text(ok),
+                  onPressed: () {
+                    completer.complete(Alert.OK);
+                    Navigator.pop(context);
+                  },
+                ),
+              ],
+            );
+          } else {
+            return new AlertDialog(
+              title: new Text(title),
+              content: content == null ? null : new Text(content),
+              actions: <Widget>[
+                new FlatButton(
+                  child: new Text(cancel),
+                  onPressed: () {
+                    completer.complete(Alert.CANCEL);
+                    Navigator.of(context).pop();
+                  },
+                ),
+                new FlatButton(
+                  child: new Text(ok),
+                  onPressed: () {
+                    completer.complete(Alert.OK);
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ],
+            );
+          }
         });
 
     return completer.future;
@@ -59,9 +90,9 @@ class Alert {
     String ok,
   }) {
     Completer<int> completer = new Completer<int>();
+    AlertConfig config = AlertProvider.getConfig(context);
+    assert(config != null, "A `AlertProvider` must be supplied");
     if (ok == null) {
-      AlertConfig config = AlertProvider.getConfig(context);
-      assert(config != null, "A `AlertProvider` must be supplied");
       ok = config.ok;
     }
 
@@ -73,24 +104,40 @@ class Alert {
         context: context,
         barrierDismissible: false, // user must tap button!
         builder: (c) {
-          return CupertinoAlertDialog(
-            title: Text(title),
-            content: content != null
-                ? new Padding(
-                    padding: new EdgeInsets.only(top: 10),
-                    child: Text(content),
-                  )
-                : null,
-            actions: <Widget>[
-              CupertinoDialogAction(
-                child: Text(ok),
-                onPressed: () {
-                  completer.complete(Alert.OK);
-                  Navigator.pop(context);
-                },
-              ),
-            ],
-          );
+          if (config.useIosStyle) {
+            return CupertinoAlertDialog(
+              title: Text(title),
+              content: content != null
+                  ? new Padding(
+                      padding: new EdgeInsets.only(top: 10),
+                      child: Text(content),
+                    )
+                  : null,
+              actions: <Widget>[
+                CupertinoDialogAction(
+                  child: Text(ok),
+                  onPressed: () {
+                    completer.complete(Alert.OK);
+                    Navigator.pop(context);
+                  },
+                ),
+              ],
+            );
+          } else {
+            return new AlertDialog(
+              title: new Text(title),
+              content: content == null ? null : new Text(content),
+              actions: <Widget>[
+                new FlatButton(
+                  child: new Text(ok),
+                  onPressed: () {
+                    completer.complete(Alert.OK);
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ],
+            );
+          }
         });
 
     return completer.future;
@@ -118,6 +165,17 @@ class Alert {
       }
     });
     return completer.future;
+  }
+
+  static select<T>(BuildContext context,
+      {List<Option<T>> options, T value}) async {
+    int index = options.indexWhere((Option o) => o.value == value);
+    if (index < 0) {
+      index = 0;
+    }
+    index = await pick(context,
+        values: options.map((Option o) => o.label).toList(), index: index);
+    return options[index].value;
   }
 
   static void toast(BuildContext context, String message,

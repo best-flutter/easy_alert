@@ -26,8 +26,6 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
@@ -63,6 +61,25 @@ class _MyHomePageState extends State<MyHomePage> {
               }
             },
             child: new Text("pick value from ['a','b','c']"),
+          ),
+          new RaisedButton(
+            onPressed: () async {
+              var arr = ['a', 'b', 'c'];
+              try {
+                String ret = await Alert.select(context,
+                    options: [
+                      Option('A', 'a'),
+                      Option('B', 'b'),
+                      Option('C', 'c'),
+                    ],
+                    value: 'a');
+                Alert.toast(context, "You just pick $ret");
+              } catch (e) {
+                Alert.toast(context, "Canceled",
+                    position: ToastPosition.center);
+              }
+            },
+            child: new Text("select value from ['a','b','c']"),
           ),
           new RaisedButton(
             onPressed: () {

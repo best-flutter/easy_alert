@@ -1,3 +1,4 @@
+import 'package:easy_alert/src/provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -13,7 +14,19 @@ class Picker extends StatefulWidget {
   @required
   final VoidCallback onCancel;
 
-  Picker({this.values, this.index, this.onSelectedItemChanged, this.onCancel})
+  /// ok test
+  final String ok;
+
+  /// cancel text
+  final String cancel;
+
+  Picker(
+      {this.values,
+      this.index,
+      this.onSelectedItemChanged,
+      this.onCancel,
+      this.ok,
+      this.cancel})
       : assert(onSelectedItemChanged != null),
         assert(values != null),
         assert(index != null);
@@ -44,6 +57,12 @@ class _PickerState extends State<Picker> {
 
   @override
   Widget build(BuildContext context) {
+    AlertConfig config = AlertProvider.getConfig(context);
+    assert(config != null, "A `AlertProvider` must be supplied");
+    String ok = widget.ok;
+    String cancel = widget.cancel;
+    if (ok == null) ok = config.ok;
+    if (cancel == null) cancel = config.cancel;
     return new Container(
       height: 300,
       child: new Column(
@@ -53,7 +72,7 @@ class _PickerState extends State<Picker> {
               new InkWell(
                 child: new Padding(
                   padding: new EdgeInsets.all(10),
-                  child: new Text("取消"),
+                  child: new Text(cancel),
                 ),
                 onTap: () {
                   widget.onCancel();
@@ -64,7 +83,7 @@ class _PickerState extends State<Picker> {
                 child: new Padding(
                   padding: new EdgeInsets.all(10),
                   child: new Text(
-                    "确定",
+                    ok,
                     style: new TextStyle(color: Colors.blueAccent),
                   ),
                 ),
