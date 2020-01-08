@@ -6,10 +6,20 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class Option<T> {
-  String label;
-  T value;
+  final String label;
+  final T value;
 
-  Option(this.label, this.value);
+  const Option(this.label, this.value);
+
+  static String getLabel<T>(List<Option<T>> options, T value) {
+    return options
+        .firstWhere((Option<T> o) => o.value == value, orElse: () => null)
+        ?.label;
+  }
+
+  static int getIndex<T>(List<Option<T>> options, T value) {
+    return options.indexWhere((Option<T> o) => o.value == value);
+  }
 }
 
 class Alert {
@@ -169,7 +179,7 @@ class Alert {
 
   static select<T>(BuildContext context,
       {List<Option<T>> options, T value}) async {
-    int index = options.indexWhere((Option o) => o.value == value);
+    int index = Option.getIndex<T>(options, value);
     if (index < 0) {
       index = 0;
     }

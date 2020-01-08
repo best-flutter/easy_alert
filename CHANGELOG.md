@@ -1,5 +1,9 @@
 
-# [0.0.5]
+# [0.0.6]
+* add Options.getIndex and Options.getLabel
+
+
+## [0.0.5]
 
 * add Alert.select
 

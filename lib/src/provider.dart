@@ -1,7 +1,7 @@
 import 'dart:async';
 
-import 'package:flutter/widgets.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
 /// Supply text for alert, cancel and ok
 /// 为Alert提供文字，一般为取消和确认
@@ -9,6 +9,7 @@ class AlertConfig {
   final String ok;
   final String cancel;
   final bool useIosStyle;
+
   const AlertConfig(
       {this.ok: "OK", this.cancel: "CANCEL", this.useIosStyle: true});
 }

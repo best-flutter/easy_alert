@@ -82,3 +82,22 @@ try {
     ... cancel select
 }
 ```
+
+
+```
+
+
+try {
+    String ret = await Alert.select(context,
+        options: [
+          Option('A', 'a'),
+          Option('B', 'b'),
+          Option('C', 'c'),
+        ],
+        value: 'a');
+Alert.toast(context, "You just pick $ret");
+} catch (e) {
+Alert.toast(context, "Canceled",
+    position: ToastPosition.center);
+}
+```

@@ -1,6 +1,6 @@
+import 'package:easy_alert/src/alert.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:easy_alert/src/alert.dart';
 
 class EasyPicker extends StatefulWidget {
   @required

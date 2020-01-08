@@ -1,6 +1,6 @@
 name: easy_alert
 description: A alert package to use alert and toast within one line code.
-version: 0.0.5
+version: 0.0.6
 author: JZoom <jzoom8112@gmail.com>
 homepage: https://github.com/jzoom/easy_alert
 
@@ -10,6 +10,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+
 
 dev_dependencies:
   flutter_test:
