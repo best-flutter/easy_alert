@@ -1,5 +1,9 @@
+# [0.0.7]
 
-# [0.0.6]
+* adjust layout of toast
+* support input
+
+## [0.0.6]
 * add Options.getIndex and Options.getLabel
 
 

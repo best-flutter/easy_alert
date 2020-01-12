@@ -4,7 +4,7 @@ import 'package:easy_alert/easy_alert.dart';
 
 void main() => runApp(new AlertProvider(
       child: new MyApp(),
-      config: new AlertConfig(ok: "OK", cancel: "CANCEL"),
+      config: new AlertConfig(ok: "OK", cancel: "CANCEL", useIosStyle: true),
     ));
 
 class MyApp extends StatelessWidget {
@@ -88,6 +88,17 @@ class _MyHomePageState extends State<MyHomePage> {
                       Alert.toast(context, ret == Alert.OK ? "ok" : "cancel"));
             },
             child: new Text("confirm"),
+          ),
+          new RaisedButton(
+            onPressed: () async {
+              try {
+                var str = await Alert.input(context);
+                Alert.toast(context, "input is $str");
+              } catch (e) {
+                Alert.toast(context, "input canceled");
+              }
+            },
+            child: new Text("show input dialog"),
           ),
           new RaisedButton(
             onPressed: () {

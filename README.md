@@ -29,13 +29,15 @@ to your pubspec.yaml, and run `flutter packages get` in your project root direct
 ## ROADMAP
 
 * [x] alert
+* [x] ios style alert
 * [x] confirm
+* [x] ios style confirm
 * [x] toast
 * [ ] customize alert dialog
 * [ ] customize toast
 * [ ] support bottom sheet.
-* [ ] support input
-* [x] support pick
+* [x] support input
+* [x] support pick and select
 
 ##  Integrate with your flutter app
 
@@ -47,6 +49,9 @@ void main() => runApp(new AlertProvider(
         cancel: "CANCEL text for `cancel` button in AlertDialog"),
     ));
 ```
+
+
+
 
 ## alert
 

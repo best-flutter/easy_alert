@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:easy_alert/src/picker.dart';
 import 'package:easy_alert/src/provider.dart';
+import 'package:easy_alert/src/toast.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -93,13 +94,71 @@ class Alert {
     return completer.future;
   }
 
-  static Future<int> alert(
-    BuildContext context, {
-    String title,
-    String content,
-    String ok,
-  }) {
-    Completer<int> completer = new Completer<int>();
+  static Future<String> input(BuildContext context,
+      {String ok, String value, String title = "Please input"}) async {
+    AlertConfig config = AlertProvider.getConfig(context);
+    assert(config != null, "A `AlertProvider` must be supplied");
+    if (ok == null) {
+      ok = config.ok;
+    }
+    TextEditingController controller =
+        new TextEditingController(text: value ?? "");
+    try {
+      var str = await showDialog(
+          context: context,
+          barrierDismissible: true,
+          builder: (c) {
+            if (config.useIosStyle) {
+              return CupertinoAlertDialog(
+                title: Text(title),
+                content: new Padding(
+                  padding: new EdgeInsets.only(top: 10),
+                  child: TextField(
+                    controller: controller,
+                    autofocus: true,
+                  ),
+                ),
+                actions: <Widget>[
+                  CupertinoDialogAction(
+                    child: Text(ok),
+                    onPressed: () {
+                      Navigator.pop(context, controller.text);
+                    },
+                  ),
+                ],
+              );
+            } else {
+              return new AlertDialog(
+                title: new Text(title),
+                content: TextField(
+                  controller: controller,
+                  autofocus: true,
+                ),
+                actions: <Widget>[
+                  new FlatButton(
+                    child: new Text(ok),
+                    onPressed: () {
+                      Navigator.pop(context, controller.text);
+                    },
+                  ),
+                ],
+              );
+            }
+          });
+      if (str == null) {
+        throw new Exception("Canceled");
+      }
+      return str;
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  static Future<int> alert(BuildContext context,
+      {String title,
+      String content,
+      String ok,
+      bool barrierDismissible: false}) async {
     AlertConfig config = AlertProvider.getConfig(context);
     assert(config != null, "A `AlertProvider` must be supplied");
     if (ok == null) {
@@ -110,47 +169,51 @@ class Alert {
       title = content;
     }
 
-    showDialog(
-        context: context,
-        barrierDismissible: false, // user must tap button!
-        builder: (c) {
-          if (config.useIosStyle) {
-            return CupertinoAlertDialog(
-              title: Text(title),
-              content: content != null
-                  ? new Padding(
-                      padding: new EdgeInsets.only(top: 10),
-                      child: Text(content),
-                    )
-                  : null,
-              actions: <Widget>[
-                CupertinoDialogAction(
-                  child: Text(ok),
-                  onPressed: () {
-                    completer.complete(Alert.OK);
-                    Navigator.pop(context);
-                  },
-                ),
-              ],
-            );
-          } else {
-            return new AlertDialog(
-              title: new Text(title),
-              content: content == null ? null : new Text(content),
-              actions: <Widget>[
-                new FlatButton(
-                  child: new Text(ok),
-                  onPressed: () {
-                    completer.complete(Alert.OK);
-                    Navigator.of(context).pop();
-                  },
-                ),
-              ],
-            );
-          }
-        });
-
-    return completer.future;
+    try {
+      int ret = await showDialog(
+          context: context,
+          barrierDismissible: barrierDismissible, // user must tap button!
+          builder: (c) {
+            if (config.useIosStyle) {
+              return CupertinoAlertDialog(
+                title: Text(title),
+                content: content != null
+                    ? new Padding(
+                        padding: new EdgeInsets.only(top: 10),
+                        child: Text(content),
+                      )
+                    : null,
+                actions: <Widget>[
+                  CupertinoDialogAction(
+                    child: Text(ok),
+                    onPressed: () {
+                      Navigator.pop(context, Alert.OK);
+                    },
+                  ),
+                ],
+              );
+            } else {
+              return new AlertDialog(
+                title: new Text(title),
+                content: content == null ? null : new Text(content),
+                actions: <Widget>[
+                  new FlatButton(
+                    child: new Text(ok),
+                    onPressed: () {
+                      Navigator.pop(context, Alert.OK);
+                    },
+                  ),
+                ],
+              );
+            }
+          });
+      if (ret == null) {
+        throw new Exception("Canceled");
+      }
+      return ret;
+    } catch (e) {
+      throw e;
+    }
   }
 
   static Future<int> pick(BuildContext context,
@@ -163,10 +226,11 @@ class Alert {
             values: values,
             index: index,
             onSelectedItemChanged: (int index) {
+              Navigator.pop(context, index);
               completer.complete(index);
             },
             onCancel: () {
-              completer.completeError(null);
+              Navigator.pop(context, null);
             },
           );
         }).then((var value) {

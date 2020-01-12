@@ -76,7 +76,6 @@ class _PickerState extends State<Picker> {
                 ),
                 onTap: () {
                   widget.onCancel();
-                  Navigator.pop(context, true);
                 },
               ),
               new InkWell(
@@ -89,8 +88,6 @@ class _PickerState extends State<Picker> {
                 ),
                 onTap: () {
                   widget.onSelectedItemChanged(_index);
-
-                  Navigator.pop(context, true);
                 },
               ),
             ],

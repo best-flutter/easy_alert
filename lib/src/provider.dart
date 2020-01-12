@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:easy_alert/src/toast.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
@@ -9,9 +10,12 @@ class AlertConfig {
   final String ok;
   final String cancel;
   final bool useIosStyle;
-
+  final EdgeInsetsGeometry toastPadding;
   const AlertConfig(
-      {this.ok: "OK", this.cancel: "CANCEL", this.useIosStyle: true});
+      {this.ok: "OK",
+      this.cancel: "CANCEL",
+      this.useIosStyle: true,
+      this.toastPadding: const EdgeInsets.all(30)});
 }
 
 class AlertProvider extends StatefulWidget {
@@ -27,17 +31,20 @@ class AlertProvider extends StatefulWidget {
       this.textDirection = TextDirection.ltr});
 
   static AlertConfig getConfig(BuildContext context) {
-    final _AlertScope scope = context.inheritFromWidgetOfExactType(_AlertScope);
+    final _AlertScope scope =
+        context.dependOnInheritedWidgetOfExactType(aspect: _AlertScope);
     return scope?.config;
   }
 
   static AlertConfig getToaster(BuildContext context) {
-    final _AlertScope scope = context.inheritFromWidgetOfExactType(_AlertScope);
+    final _AlertScope scope =
+        context.dependOnInheritedWidgetOfExactType(aspect: _AlertScope);
     return scope?.config;
   }
 
   static ToastManager getManager(BuildContext context) {
-    final _AlertScope scope = context.inheritFromWidgetOfExactType(_AlertScope);
+    final _AlertScope scope =
+        context.dependOnInheritedWidgetOfExactType(aspect: _AlertScope);
 
     return scope?.manager;
   }
@@ -46,59 +53,6 @@ class AlertProvider extends StatefulWidget {
   State<StatefulWidget> createState() {
     return new _AlertProviderState();
   }
-}
-
-enum ToastPosition {
-  bottom,
-  center,
-  top,
-}
-
-enum ToastDuration {
-  short,
-  long,
-}
-
-class Toast {
-  final String message;
-  final ToastPosition position;
-  final ToastDuration duration;
-
-  Toast({this.position, this.message, this.duration});
-}
-
-class ToastView extends StatelessWidget {
-  final String text;
-  final TextDirection textDirection;
-
-  ToastView({this.text, this.textDirection});
-
-  @override
-  Widget build(BuildContext context) {
-    return new ClipRRect(
-      borderRadius: new BorderRadius.circular(3.0),
-      child: new Container(
-        color: Colors.black54,
-        child: new Padding(
-          padding: new EdgeInsets.fromLTRB(10.0, 5.0, 10.0, 5.0),
-          child: new Text(
-            text,
-            textDirection: textDirection,
-            textAlign: TextAlign.center,
-            style: new TextStyle(fontSize: 13.0, color: Colors.white),
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-abstract class ToastManager {
-  void showToast(
-    String message, {
-    ToastPosition position,
-    ToastDuration duration: ToastDuration.short,
-  });
 }
 
 class _AlertProviderState extends State<AlertProvider>
@@ -189,7 +143,7 @@ class _AlertProviderState extends State<AlertProvider>
     if (_current != null) {
       children.add(
         new Padding(
-            padding: new EdgeInsets.fromLTRB(10.0, 100.0, 10.0, 10.0),
+            padding: widget.config.toastPadding,
             child: new Align(
               child: new AnimatedBuilder(
                   animation: _animation,
