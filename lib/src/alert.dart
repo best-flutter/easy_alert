@@ -228,11 +228,11 @@ class Alert {
             values: values,
             index: index,
             onSelectedItemChanged: (int index) {
-              Navigator.of(context, rootNavigator: true).pop(index);
+              Navigator.of(context).pop(index);
               completer.complete(index);
             },
             onCancel: () {
-              Navigator.of(context, rootNavigator: true).pop(null);
+              Navigator.of(context).pop(null);
             },
           );
         }).then((var value) {
