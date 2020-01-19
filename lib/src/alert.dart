@@ -55,14 +55,14 @@ class Alert {
                   child: Text(cancel),
                   onPressed: () {
                     completer.complete(Alert.CANCEL);
-                    Navigator.pop(context);
+                    Navigator.of(context, rootNavigator: true).pop();
                   },
                 ),
                 CupertinoDialogAction(
                   child: Text(ok),
                   onPressed: () {
                     completer.complete(Alert.OK);
-                    Navigator.pop(context);
+                    Navigator.of(context, rootNavigator: true).pop();
                   },
                 ),
               ],
@@ -122,7 +122,8 @@ class Alert {
                   CupertinoDialogAction(
                     child: Text(ok),
                     onPressed: () {
-                      Navigator.pop(context, controller.text);
+                      Navigator.of(context, rootNavigator: true)
+                          .pop(controller.text);
                     },
                   ),
                 ],
@@ -138,7 +139,8 @@ class Alert {
                   new FlatButton(
                     child: new Text(ok),
                     onPressed: () {
-                      Navigator.pop(context, controller.text);
+                      Navigator.of(context, rootNavigator: true)
+                          .pop(controller.text);
                     },
                   ),
                 ],
@@ -187,7 +189,7 @@ class Alert {
                   CupertinoDialogAction(
                     child: Text(ok),
                     onPressed: () {
-                      Navigator.pop(context, Alert.OK);
+                      Navigator.of(context, rootNavigator: true).pop(Alert.OK);
                     },
                   ),
                 ],
@@ -200,7 +202,7 @@ class Alert {
                   new FlatButton(
                     child: new Text(ok),
                     onPressed: () {
-                      Navigator.pop(context, Alert.OK);
+                      Navigator.of(context, rootNavigator: true).pop(Alert.OK);
                     },
                   ),
                 ],
@@ -226,11 +228,11 @@ class Alert {
             values: values,
             index: index,
             onSelectedItemChanged: (int index) {
-              Navigator.pop(context, index);
+              Navigator.of(context, rootNavigator: true).pop(index);
               completer.complete(index);
             },
             onCancel: () {
-              Navigator.pop(context, null);
+              Navigator.of(context, rootNavigator: true).pop(null);
             },
           );
         }).then((var value) {
