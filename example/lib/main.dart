@@ -64,7 +64,6 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
           new RaisedButton(
             onPressed: () async {
-              var arr = ['a', 'b', 'c'];
               try {
                 String ret = await Alert.select(context,
                     options: [

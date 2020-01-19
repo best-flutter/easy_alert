@@ -76,14 +76,14 @@ class Alert {
                   child: new Text(cancel),
                   onPressed: () {
                     completer.complete(Alert.CANCEL);
-                    Navigator.of(context).pop();
+                    Navigator.of(context, rootNavigator: true).pop();
                   },
                 ),
                 new FlatButton(
                   child: new Text(ok),
                   onPressed: () {
                     completer.complete(Alert.OK);
-                    Navigator.of(context).pop();
+                    Navigator.of(context, rootNavigator: true).pop();
                   },
                 ),
               ],
